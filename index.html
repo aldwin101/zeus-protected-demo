@@ -4,13 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZEUS | Private Master Barbershop (Demo Preview)</title>
-    <script>
+<script>
         function runProtection() {
             // 1. Check if the user is on a mobile device (don't block phones/tablets)
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             if (isMobile) return;
 
-            // 2. Enforce the strict DevTools blocker for PCs
+            // 2. Disable Right-Click Context Menu
+            document.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+            });
+
+            // 3. Disable Keyboard Shortcuts for Inspect, View Source, and Save
+            document.addEventListener('keydown', function (e) {
+                // Prevent F12
+                if (e.key === 'F12') {
+                    e.preventDefault();
+                }
+
+                // Prevent Ctrl+U (View Source), Ctrl+S (Save), Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (DevTools)
+                if (e.ctrlKey && (
+                    e.key === 'u' || e.key === 'U' || 
+                    e.key === 's' || e.key === 'S' || 
+                    (e.shiftKey && (e.key === 'i' || e.key === 'I' || e.key === 'j' || e.key === 'J' || e.key === 'c' || e.key === 'C'))
+                )) {
+                    e.preventDefault();
+                }
+            });
+
+            // 4. Enforce the strict DevTools blocker for PCs
             const threshold = 160;
             setInterval(() => {
                 if ((window.outerWidth - window.innerWidth > threshold) || 
