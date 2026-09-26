@@ -70,6 +70,11 @@
             background: #8c9296;
             border-radius: 2px;
         }
+        /* Custom adjustment for iOS date input rendering */
+        input[type="date"] {
+            min-height: 52px;
+            -webkit-appearance: none;
+        }
     </style>
 </head>
 <body class="bg-oatmeal text-charcoal font-sans antialiased selection:bg-leather selection:text-white overflow-x-hidden relative">
@@ -398,7 +403,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-full">
                             <div class="min-w-0">
                                 <label for="client-date" class="block text-xs font-display font-bold uppercase tracking-widest text-charcoal mb-2">Target Date</label>
-                                <input type="date" id="client-date" required class="w-full max-w-full box-border bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base">
+                                <input type="date" id="client-date" required class="w-full max-w-full box-border bg-sandLight border-2 border-charcoal/30 rounded-xl px-3 sm:px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base">
                             </div>
                             <div class="min-w-0">
                                 <label for="client-time" class="block text-xs font-display font-bold uppercase tracking-widest text-charcoal mb-2">Target Time</label>
