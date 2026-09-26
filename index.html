@@ -75,7 +75,7 @@
 <body class="bg-oatmeal text-charcoal font-sans antialiased selection:bg-leather selection:text-white overflow-x-hidden relative">
 
     <!-- Central "Create With AO" Watermark (Pointer events disabled so it never affects functionality) -->
-    <div class="fixed inset-0 flex items-center justify-center pointer-events-none z-20 select-none overflow-hidden">
+    <div class="fixed inset-0 flex items-center justify-center pointer-events-none z-25 select-none overflow-hidden">
         <div class="text-charcoal/[0.07] font-display font-black text-5xl sm:text-7xl lg:text-9xl tracking-widest uppercase transform -rotate-12 whitespace-nowrap text-center">
             Create With AO
         </div>
@@ -372,11 +372,11 @@
                 </p>
 
                 <!-- Booking Widget Card -->
-                <div class="bg-oatmeal text-charcoal p-6 sm:p-12 rounded-2xl shadow-2xl text-left border-4 border-charcoal max-w-2xl mx-auto">
-                    <form id="booking-form" onsubmit="handleBooking(event)" class="space-y-6">
+                <div class="bg-oatmeal text-charcoal p-6 sm:p-12 rounded-2xl shadow-2xl text-left border-4 border-charcoal max-w-2xl mx-auto box-border">
+                    <form id="booking-form" onsubmit="handleBooking(event)" class="space-y-6 w-full">
                         <div>
                             <label for="service-select" class="block text-xs font-display font-bold uppercase tracking-widest text-charcoal mb-2">Select Service</label>
-                            <select id="service-select" class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base">
+                            <select id="service-select" class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base box-border">
                                 <option value="The Zeus Sovereign Cut - $60">The Zeus Sovereign Cut (45 min) — $60</option>
                                 <option value="Titan Beard Sculpt - $45">Titan Beard Sculpt (30 min) — $45</option>
                                 <option value="The Zeus & Steel Ritual - $95">The Zeus & Steel Ritual (75 min) — $95</option>
@@ -384,25 +384,25 @@
                             </select>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
                             <div>
                                 <label for="client-name" class="block text-xs font-display font-bold uppercase tracking-widest text-charcoal mb-2">Your Name</label>
-                                <input type="text" id="client-name" required placeholder="Marcus Vance" class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base">
+                                <input type="text" id="client-name" required placeholder="Marcus Vance" class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base box-border">
                             </div>
                             <div>
                                 <label for="client-phone" class="block text-xs font-display font-bold uppercase tracking-widest text-charcoal mb-2">Phone Number</label>
-                                <input type="tel" id="client-phone" required placeholder="(555) 019-2834" class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base">
+                                <input type="tel" id="client-phone" required placeholder="(555) 019-2834" class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base box-border">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
                             <div>
                                 <label for="client-date" class="block text-xs font-display font-bold uppercase tracking-widest text-charcoal mb-2">Target Date</label>
-                                <input type="date" id="client-date" required class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base">
+                                <input type="date" id="client-date" required class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base box-border">
                             </div>
                             <div>
                                 <label for="client-time" class="block text-xs font-display font-bold uppercase tracking-widest text-charcoal mb-2">Target Time</label>
-                                <select id="client-time" class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base">
+                                <select id="client-time" class="w-full bg-sandLight border-2 border-charcoal/30 rounded-xl px-4 py-3.5 text-charcoal font-medium focus:outline-none focus:border-leather transition-colors text-sm sm:text-base box-border">
                                     <option value="08:00 AM">08:00 AM</option>
                                     <option value="09:30 AM">09:30 AM</option>
                                     <option value="11:00 AM">11:00 AM</option>
@@ -468,12 +468,17 @@
             });
         }
 
-        // Set minimum date for booking input to today with safety guard
+        // FIXED: Set minimum date for booking input to local today (prevents timezone offset bugs)
         const dateInput = document.getElementById('client-date');
         if (dateInput) {
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.min = today;
-            dateInput.value = today;
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const localToday = `${year}-${month}-${day}`;
+            
+            dateInput.min = localToday;
+            dateInput.value = localToday;
         }
 
         // Custom booking handler with null checks
